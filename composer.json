@@ -1,0 +1,8 @@
+{
+	"autoload": {
+		"psr-4": {
+			"sao\\": "vendor/sao/src",
+			"app\\": "app"
+		}
+	}
+}
