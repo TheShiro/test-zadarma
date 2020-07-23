@@ -2,11 +2,11 @@
 
 namespace app\controllers;
 
-class MainController
+class MainController extends \sao\MVC\Controller
 {
 	public function index()
 	{
-		echo "main index page";
+		$this->render('index');
 	}
 }
 

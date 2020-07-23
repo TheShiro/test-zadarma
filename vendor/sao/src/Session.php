@@ -10,7 +10,7 @@ class Session
 		session_start();
 	}
 
-	public static function setParams($arr = array()) 
+	public static function setParams($arr = []) 
 	{
 		foreach ($arr as $k => $v) {
 			$_SESSION[$k] = $v;

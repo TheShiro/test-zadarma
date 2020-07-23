@@ -32,7 +32,7 @@ class Router
 					$action = $v['action'];
 
 					if(method_exists($controller, $action)) {
-						$controller->$action();
+						$controller->$action(\sao\Application::$app->request);
 					} else {
 						throw new \Exception("Метод $controllerPath::$action не найден", 404);
 					}

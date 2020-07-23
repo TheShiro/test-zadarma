@@ -5,16 +5,16 @@ namespace sao\Route;
 class Route
 {
 
-	public static $routes = array();
+	public static $routes = [];
 
 	public function __construct()
 	{
-		self::$routes = array(
-			'get' => array(),
-			'post' => array(),
-			'put' => array(),
-			'delete' => array(),
-		);
+		self::$routes = [
+			'get' => [],
+			'post' => [],
+			'put' => [],
+			'delete' => [],
+		];
 		require_once ROUTES . "/web.php";
 		require_once ROUTES . "/api.php";
 	}
@@ -43,19 +43,19 @@ class Route
 		self::add(__FUNCTION__, self::arrayFormat($urn, $controller, $action));
 	}
 
-	private static function add($method, $params = array())
+	private static function add($method, $params = [])
 	{
 		self::$routes[$method] = array_merge(self::$routes[$method], $params);
 	}
 
 	private static function arrayFormat($urn, $controller, $action)
 	{
-		return array(
-			$urn => array(
+		return [
+			$urn => [
 				'controller' => $controller,
 				'action' => $action
-			)
-		);
+			]
+		];
 	}
 
 	private static function getResource($urn)
