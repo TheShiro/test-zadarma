@@ -2,19 +2,16 @@
 
 namespace sao\MVC;
 
-class Model
+class Model extends \sao\Database\Query
 {
 
 	protected $atributes = [];
 	protected $fillable = [];
 	protected $hidden = [];
 
-	protected $table;
-
 	public function __construct()
 	{
-		$this->table = \sao\Helper\Helper::getNameClass(get_class($this));
-		// sao\Db::instance();
+		parent::__construct();
 	}
 
 }

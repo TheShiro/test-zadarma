@@ -10,7 +10,7 @@ class Controller
 
 	public function __construct()
 	{
-		$this->className = \sao\Helper\Helper::getNameClass(get_class($this));
+		$this->className = \sao\Helper\String::getNameClass(get_class($this));
 	}
 
 	protected function render($view, $params = [])
