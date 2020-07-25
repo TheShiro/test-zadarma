@@ -24,6 +24,11 @@ class User extends \sao\MVC\model
 		return false;
 	}
 
+	public function logout()
+	{
+		//
+	}
+
 	public function registration($request)
 	{
 		//User::create($request);

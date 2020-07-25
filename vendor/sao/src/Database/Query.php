@@ -37,9 +37,9 @@ class Query extends Db
 		$ret = [];
 
 		foreach (self::$object->fillable as $val) {
-			if(isset($params[$val])) {
+			if(isset($params->{$val})) {
 				$ret[] = ":" . $val;
-				self::$params[":" . $val] = $params[$val];
+				self::$params[":" . $val] = $params->{$val};
 			} else {
 				throw new \Exception("Ошибка передачи параметров", 500);
 			}
@@ -88,9 +88,6 @@ class Query extends Db
 
 		$sql = self::bindQuery();
 
-		// echo $sql;
-		// print_r(self::$params);
-
 		return Db::execute($sql, self::$params)->fetch();
 	}
 
@@ -98,9 +95,6 @@ class Query extends Db
 		$class = self::object();
 
 		$sql = self::bindQuery();
-
-		// echo $sql;
-		// print_r(self::$params);
 
 		return Db::execute($sql, self::$params)->fetchAll();
 	}
@@ -112,10 +106,12 @@ class Query extends Db
 
 		$class = self::object();
 		
-		$sql = sprintf("INSERT INTO %s(%s) VALUES (%s)",
+		$sql = sprintf("INSERT INTO %s(%s, created_at, updated_at) VALUES (%s, %s, %s)",
 			self::$table,
 			implode(", ", $class->fillable),
-			implode(", ", self::values($params))
+			implode(", ", self::values($params)),
+			time(),
+			time()
 		);
 
 		Db::execute($sql, self::$params);
@@ -128,9 +124,10 @@ class Query extends Db
 
 		$class = self::object();
 		
-		$sql = sprintf("UPDATE %s SET %s WHERE id = :id LIMIT 1",
+		$sql = sprintf("UPDATE %s SET %s, updated_at = %s WHERE id = :id LIMIT 1",
 			self::$table,
-			implode(", ", self::set($params))
+			implode(", ", self::set($params)),
+			time()
 		);
 
 		Db::execute($sql, self::$params);

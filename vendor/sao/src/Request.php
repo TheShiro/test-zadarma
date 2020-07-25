@@ -17,6 +17,10 @@ class Request
 		if(!empty($_POST)) {
 			$this->post = $_POST;
 		}
+
+		if($json = file_get_contents('php://input')) {
+			$this->post = json_decode($json);
+		}
 	}
 
 	public function get($key = "") 

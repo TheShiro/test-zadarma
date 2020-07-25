@@ -2,7 +2,6 @@
 
 use sao\Route\Route;
 
-// Router::get("/", "MainController", "index");
-Route::get("/book", "MainController", "index");
+Route::post("/book/create", "BookController", "create");
 
 ?>

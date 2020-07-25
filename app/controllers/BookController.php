@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use sao\Session;
+use app\models\Book;
 
 class BookController extends \sao\MVC\Controller
 {
@@ -13,7 +14,19 @@ class BookController extends \sao\MVC\Controller
 			$this->redirect("/login");
 		}
 
-		$this->render('index');
+		$book = new Book();
+		$rows = $book->setUser(1)->byUser();
+
+		$this->render('index', [
+			'rows' => $rows
+		]);
+	}
+
+	public function create($request)
+	{
+		print_r($request);
+		echo json_encode($request);
+		Book::create($request);
 	}
 }
 
