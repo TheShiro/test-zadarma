@@ -19,7 +19,7 @@ class Request
 		}
 	}
 
-	public function get($key = 0) 
+	public function get($key = "") 
 	{
 		if(empty($key)) {
 			return $this->get;
@@ -28,7 +28,7 @@ class Request
 		return $this->get[$key];
 	}
 
-	public function post($key = 0) 
+	public function post($key = "") 
 	{
 		if(empty($key)) {
 			return $this->post;

@@ -68,7 +68,7 @@ class Query extends Db
 			return self::object();
 		}
 
-		self::$where = self::parseParams($params);
+		self::$where = implode(" AND ", self::parseParams($params));
 		
 		return self::object();
 	}
@@ -88,7 +88,10 @@ class Query extends Db
 
 		$sql = self::bindQuery();
 
-		return $class->execute($sql, self::$params)->fetch();
+		// echo $sql;
+		// print_r(self::$params);
+
+		return Db::execute($sql, self::$params)->fetch();
 	}
 
 	public static function all() {
@@ -96,9 +99,10 @@ class Query extends Db
 
 		$sql = self::bindQuery();
 
-		echo $sql;
+		// echo $sql;
+		// print_r(self::$params);
 
-		return $class->execute($sql, self::$params)->fetchAll();
+		return Db::execute($sql, self::$params)->fetchAll();
 	}
 
 	public static function create($params = []) {
@@ -114,7 +118,7 @@ class Query extends Db
 			implode(", ", self::values($params))
 		);
 
-		$class->execute($sql, self::$params);
+		Db::execute($sql, self::$params);
 	}
 
 	public static function update($params = []) {
@@ -129,7 +133,7 @@ class Query extends Db
 			implode(", ", self::set($params))
 		);
 
-		$class->execute($sql, self::$params);
+		Db::execute($sql, self::$params);
 	}
 
 	public static function delete($params = []) {
@@ -149,7 +153,7 @@ class Query extends Db
 			}
 		}
 
-		$class->execute($sql, self::$params);
+		Db::execute($sql, self::$params);
 	}
 
 	private static function object()
@@ -164,9 +168,9 @@ class Query extends Db
 
 	private static function parseParams($params)
 	{
-		$ret = "";
+		$ret = [];
 		foreach ($params as $key => $val) {
-			$ret .= $key . " = :" . $key;
+			$ret[] = $key . " = :" . $key;
 			self::$params[":" . $key] = $val;
 		}
 		return $ret;

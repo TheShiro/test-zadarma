@@ -7,6 +7,7 @@ class Controller
 
 	protected $layout = "default";
 	protected $className;
+	protected $title = "Телефонная книга";
 
 	public function __construct()
 	{
@@ -15,7 +16,16 @@ class Controller
 
 	protected function render($view, $params = [])
 	{
-		(new View($this->className))->render($view, $params);
+		(new View())
+			->setPath($this->className)
+			->setLayout($this->layout)
+			->setTitle($this->title)
+			->render($view, $params);
+	}
+
+	protected function redirect($url) {
+		$_SERVER['QUERY_STRING'] = $url;
+		header('Location: ' . $url);
 	}
 
 }

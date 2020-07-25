@@ -14,6 +14,19 @@ class Model extends \sao\Database\Query
 		parent::__construct();
 	}
 
+	public function __set($name,$value)
+	{
+		// echo "initialize $name <br>";
+		$typeObject = "\sao\Data\\" . ucfirst($name);
+		$this->{$name} = new $typeObject();
+		$this->{$name}->value = $value;
+	}
+
+	public function __get($name) 
+	{
+		return $this->{$name};
+	}
+
 }
 
 ?>

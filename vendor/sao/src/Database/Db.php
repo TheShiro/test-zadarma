@@ -16,7 +16,7 @@ class Db
 		self::$dbh = new \PDO($db['dsn'], $db['user'], $db['pass']);
 	}
 
-	protected function execute($query, $params = [])
+	protected static function execute($query, $params = [])
 	{
 		$sth = self::$dbh->prepare($query);
 		$sth->execute($params);
