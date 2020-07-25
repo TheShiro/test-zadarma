@@ -18,15 +18,27 @@ class BookController extends \sao\MVC\Controller
 		$rows = $book->setUser(1)->byUser();
 
 		$this->render('index', [
-			'rows' => $rows
+			'rows' => $rows,
+			'id' => Session::getParam("user_id")
 		]);
 	}
 
 	public function create($request)
 	{
-		print_r($request);
-		echo json_encode($request);
-		Book::create($request);
+		$id = Book::create($request);
+		echo json_encode($id);
+	}
+
+	public function update($request)
+	{
+		Book::update($request);
+		echo json_encode(true);
+	}
+
+	public function delete($request)
+	{
+		Book::delete($request);
+		echo json_encode(true);
 	}
 }
 

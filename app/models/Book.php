@@ -17,7 +17,7 @@ class Book extends \sao\MVC\model
 
 	public function byUser()
 	{
-		return self::where(['user_id' => $this->user_id])->all();
+		return self::where(['user_id' => $this->user_id])->orderBy(['id'], "desc")->all();
 	}
 
 	public function setUser($value)

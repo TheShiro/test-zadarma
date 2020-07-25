@@ -37,9 +37,10 @@ class Query extends Db
 		$ret = [];
 
 		foreach (self::$object->fillable as $val) {
-			if(isset($params->{$val})) {
+			if((is_object($params) && isset($params->{$val})) 
+				|| (is_array($params) && isset($params[$val]))) {
 				$ret[] = ":" . $val;
-				self::$params[":" . $val] = $params->{$val};
+				self::$params[":" . $val] = (is_object($params) ? $params->{$val} : $params[$val]);
 			} else {
 				throw new \Exception("Ошибка передачи параметров", 500);
 			}
@@ -78,8 +79,9 @@ class Query extends Db
 		return self::object();
 	}
 
-	public static function orderBy($params = "")
+	public static function orderBy($params = "", $sort = "asc")
 	{
+		self::$order = implode(", ", $params) . " " . $sort;
 		return self::object();
 	}
 
@@ -115,11 +117,18 @@ class Query extends Db
 		);
 
 		Db::execute($sql, self::$params);
+		return Db::$dbh->lastInsertId();
 	}
 
 	public static function update($params = []) {
-		if(empty($params) || empty($params['id'])) {
-			return false;
+		if(empty($params)) {
+			if(is_object($params) && empty($params->id)) {
+				return false;
+			}
+
+			if(is_array($params) && empty($params['id'])) {
+				return false;
+			}
 		}
 
 		$class = self::object();
