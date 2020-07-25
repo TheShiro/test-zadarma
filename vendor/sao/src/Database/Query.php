@@ -40,7 +40,7 @@ class Query extends Db
 			if((is_object($params) && isset($params->{$val})) 
 				|| (is_array($params) && isset($params[$val]))) {
 				$ret[] = ":" . $val;
-				self::$params[":" . $val] = (is_object($params) ? $params->{$val} : $params[$val]);
+				self::$params[":" . $val] = is_object($params) ? $params->{$val} : $params[$val];
 			} else {
 				throw new \Exception("Ошибка передачи параметров", 500);
 			}

@@ -2,3 +2,25 @@
 	max-width: 1200px;
 	margin: 0 auto;
 }
+
+.header {
+	margin-top: 20px;
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+    background-color: transparent;
+    background-image: none;
+    border-color: #6c757d;
+    transition: color .15s ease-in-out,
+    	background-color .15s 
+}
+
+.btn-outline-secondary:hover {
+	background-color: #6c757d;
+	color: #fff;
+}
+
+input {
+    margin-bottom: 10px;
+}

@@ -23,6 +23,14 @@ class BookController extends \sao\MVC\Controller
 		]);
 	}
 
+	public function view($id) {
+		$entry = Book::where(['id' => $id['id']])->one();
+		$this->render('view', [
+			'entry' => $entry,
+			'id' => Session::getParam("user_id")
+		]);
+	}
+
 	public function create($request)
 	{
 		$id = Book::create($request);

@@ -2,7 +2,7 @@
 
 namespace sao\Data;
 
-class Password extends String
+class Repeat extends String
 {
 	
 	public function __set($name, $value)

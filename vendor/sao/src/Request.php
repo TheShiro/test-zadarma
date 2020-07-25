@@ -19,7 +19,10 @@ class Request
 		}
 
 		if($json = file_get_contents('php://input')) {
-			$this->post = json_decode($json);
+			$json = json_decode($json);
+			if(!empty($json)) {
+				$this->post = $json;
+			}
 		}
 	}
 

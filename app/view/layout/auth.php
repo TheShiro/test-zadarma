@@ -14,10 +14,6 @@
 <body>
 	
 	<div id="app">
-		<div class="header">
-			<a href="/logout" class="btn btn-outline-secondary">Выход</a>
-		</div>
-
 		<?=$content?>
 	</div>
 

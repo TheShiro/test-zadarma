@@ -9,8 +9,11 @@ class User extends \sao\MVC\model
 	protected $id;
 	protected $login;
 	protected $password;
+	protected $repeat; // repeat password
 	protected $name;
 	protected $email;
+
+	public $invalid = "";
 
 	protected $fillable = ['login', 'pass', 'name', 'email'];
 
@@ -24,14 +27,20 @@ class User extends \sao\MVC\model
 		return false;
 	}
 
-	public function logout()
+	public function signup()
 	{
-		//
-	}
+		if(!$this->invalid) {
+			$request = [
+				'login' => $this->login,
+				'pass' => $this->password,
+				'name' => $this->name,
+				'email' => $this->email,
+			];
 
-	public function registration($request)
-	{
-		//User::create($request);
+			self::create($request);
+		} else {
+			return false;
+		}
 	}
 
 }
