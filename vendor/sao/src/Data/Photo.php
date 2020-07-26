@@ -2,7 +2,7 @@
 
 namespace sao\Data;
 
-class Image extends File
+class Photo extends File
 {
 
 }

@@ -40,13 +40,20 @@
 
 <template class="add">
 	<tr class="new-item">
-		<td class="upload-image"><input type="file" class="photo" name="photo"></td>
+		<td class="upload-image">
+			<input type="file" class="photo" name="photo" oninput="validateField('.photo')">
+			<p class="photo-error"></p>
+		</td>
 		<td>
 			<input type="hidden" class="user_id" name="user_id" value="<?=$id?>">
-			<p>Имя: <input type="text" class="name" name="name"></p>
-			<p>Фамилия: <input type="text" class="surname" name="surname"></p>
-			<p>Телефон: <input type="text" class="phone" name="phone"></p>
-			<p>Почта: <input type="text" class="email" name="email"></p>
+			<p>Имя: <input type="text" class="name" name="name" oninput="validateField('.name')"></p>
+			<p class="name-error"></p>
+			<p>Фамилия: <input type="text" class="surname" name="surname" oninput="validateField('.surname')"></p>
+			<p class="surname-error"></p>
+			<p>Телефон: <input type="text" class="phone" name="phone" oninput="validateField('.phone')"></p>
+			<p class="phone-error"></p>
+			<p>Почта: <input type="text" class="email" name="email" oninput="validateField('.email')"></p>
+			<p class="email-error"></p>
 		</td>
 		<td>
 			<button onclick="save(0)" class="btn btn-success">Сохранить</button>
@@ -57,14 +64,21 @@
 
 <template class="edit">
 	<tr class="edit-item">
-		<td class="upload-image"><input type="file" name="photo"><img src=":image" class="photo"></td>
+		<td class="upload-image">
+			<input type="file" name="photo"><img src=":image" class="photo" oninput="validateField('.photo')">
+			<p class="photo-error"></p>
+		</td>
 		<td>
 			<p class="hidden safe">:safe</p>
 			<input type="hidden" class="user_id" name="user_id" value="<?=$id?>">
-			<p>Имя: <input type="text" class="name" name="name" value=":name"></p>
-			<p>Фамилия: <input type="text" class="surname" name="surname" value=":surname"></p>
-			<p>Телефон: <input type="text" class="phone" name="phone" value=":phone"></p>
-			<p>Почта: <input type="text" class="email" name="email" value=":email"></p>
+			<p>Имя: <input type="text" class="name" name="name" value=":name" oninput="validateField('.name')"></p>
+			<p class="name-error"></p>
+			<p>Фамилия: <input type="text" class="surname" name="surname" value=":surname" oninput="validateField('.surname')"></p>
+			<p class="surname-error"></p>
+			<p>Телефон: <input type="text" class="phone" name="phone" value=":phone" oninput="validateField('.phone')"></p>
+			<p class="phone-error"></p>
+			<p>Почта: <input type="text" class="email" name="email" value=":email" oninput="validateField('.email')"></p>
+			<p class="email-error"></p>
 		</td>
 		<td>
 			<button onclick="save(:id)" class="btn btn-success">Сохранить</button>
@@ -206,6 +220,7 @@ function save(id) {
 				$('.edit-item').remove()
 			},
 			error: (response) => {
+				console.log(response)
 				sendMessage('alert-danger', 'Ошибка сохранения изменений!')
 			}
 		})
@@ -239,5 +254,42 @@ function sendMessage(className, message) {
 	setTimeout(() => {
 		$('.message').html("").removeClass(className)
 	}, 3000);
+}
+
+function validateField(field) {
+	// let str = $('.login').attr('name')
+	let obj = '.' + field
+	let data = [
+		{
+			name: $(field).attr('name'),
+			value: $(field).val()
+		}
+	]
+	console.log(data)
+	$.ajax({
+		url: '/api/validation/user',
+		type: 'POST',
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		data: JSON.stringify(data),
+		success: (response) => {
+			if(response == true) {
+				console.log(response)
+				$('.new-item ' + field).addClass('valid').removeClass('invalid')
+				$('.edit-item ' + field).addClass('valid').removeClass('invalid')
+				sendError(field + '-error', '')
+			} else {
+				console.log(response)
+				$('.new-item ' + field).addClass('invalid').removeClass('valid')
+				$('.edit-item ' + field).addClass('invalid').removeClass('valid')
+				sendError(field + '-error', response)
+			}
+		}
+	})
+}
+
+function sendError(field, message) {
+	// console.log('error')
+	$(field).html(message).addClass('error-alert')
 }
 </script>

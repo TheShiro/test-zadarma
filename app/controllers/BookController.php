@@ -15,7 +15,7 @@ class BookController extends \sao\MVC\Controller
 		}
 
 		$book = new Book();
-		$rows = $book->setUser(1)->byUser();
+		$rows = $book->setUser(Session::getParam('user_id'))->byUser();
 
 		$this->render('index', [
 			'rows' => $rows,
@@ -33,12 +33,30 @@ class BookController extends \sao\MVC\Controller
 
 	public function create($request)
 	{
+		$book = new Book();
+		foreach ($request as $key => $val) {
+			$book->{$key} = $val;
+		}
+
+		if($book->invalid) {
+			echo json_encode($book->invalid);
+		}
+
 		$id = Book::create($request);
 		echo json_encode($id);
 	}
 
 	public function update($request)
 	{
+		$book = new Book();
+		foreach ($request as $key => $val) {
+			$book->{$key} = $val;
+		}
+
+		if($book->invalid) {
+			echo json_encode($book->invalid);
+		}
+
 		Book::update($request);
 		echo json_encode(true);
 	}

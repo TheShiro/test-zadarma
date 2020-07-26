@@ -27,6 +27,7 @@ class File implements \sao\interfaces\IData
 	public function validation($value)
 	{
 		// проверка размера файла
+		return true;
 	}
 
 }

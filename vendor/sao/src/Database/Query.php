@@ -100,6 +100,9 @@ class Query extends Db
 
 		$sql = self::bindQuery();
 
+		// print_r($sql);
+		// print_r(self::$params);
+
 		return Db::execute($sql, self::$params)->fetchAll();
 	}
 

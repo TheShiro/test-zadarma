@@ -2,7 +2,7 @@
 
 namespace sao\Data;
 
-class Id extends Number
+class User_id extends Number
 {
 
 	public $error = "Идентификатор должн быть целочисленным!";

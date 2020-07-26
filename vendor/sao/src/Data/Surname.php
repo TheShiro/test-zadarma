@@ -2,10 +2,10 @@
 
 namespace sao\Data;
 
-class Name extends String
+class Surname extends String
 {
 
-	public $error = "Имя должно содержать только кириллические буквы!";
+	public $error = "Фамилия должно содержать только кириллические буквы!";
 
 	public function validation($value)
 	{
