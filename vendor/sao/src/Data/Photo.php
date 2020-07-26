@@ -2,9 +2,12 @@
 
 namespace sao\Data;
 
-class Photo extends File
+class Photo extends String
 {
-
+	public function validation($value)
+	{
+		return true;
+	}
 }
 
 ?>

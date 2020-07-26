@@ -9,4 +9,6 @@ Route::delete("/book/delete/{id}", "BookController", "delete");
 Route::post("/validation/user", "ValidationController", "user");
 Route::post("/validation/book", "ValidationController", "book");
 
+Route::post("/file/upload", "FileController", "upload");
+
 ?>

@@ -21,7 +21,7 @@
 	<tbody>
 <?php foreach($rows as $row): ?>
 	<tr class="item<?=$row['id']?>">
-		<td><img src="<?= $row['photo'] ?>" class="image"></td>
+		<td><img src="<?= $row['photo'] ?>" class="photo"></td>
 		<td>
 			<p>Имя: <span class="name"><?=$row['name']?></span></p>
 			<p>Фамилия: <span class="surname"><?=$row['surname']?></span></p>
@@ -41,8 +41,9 @@
 <template class="add">
 	<tr class="new-item">
 		<td class="upload-image">
-			<input type="file" class="photo" name="photo" oninput="validateField('.photo')">
-			<p class="photo-error"></p>
+			<input type="file" class="upload" name="photo" onchange="uploadFile('.upload')">
+			<input type="hidden" class="upphoto" name="photo">
+			<img src=":photo" class="photo">
 		</td>
 		<td>
 			<input type="hidden" class="user_id" name="user_id" value="<?=$id?>">
@@ -50,7 +51,7 @@
 			<p class="name-error"></p>
 			<p>Фамилия: <input type="text" class="surname" name="surname" oninput="validateField('.surname')"></p>
 			<p class="surname-error"></p>
-			<p>Телефон: <input type="text" class="phone" name="phone" oninput="validateField('.phone')"></p>
+			<p>Телефон: <input type="text" class="phone" name="phone" oninput="validateField('.phone');setCurPhone(this)"></p>
 			<p class="phone-error"></p>
 			<p>Почта: <input type="text" class="email" name="email" oninput="validateField('.email')"></p>
 			<p class="email-error"></p>
@@ -65,8 +66,9 @@
 <template class="edit">
 	<tr class="edit-item">
 		<td class="upload-image">
-			<input type="file" name="photo"><img src=":image" class="photo" oninput="validateField('.photo')">
-			<p class="photo-error"></p>
+			<input type="file" class="upload" name="photo" onchange="uploadFile('.upload')">
+			<input type="hidden" class="upphoto" name="photo">
+			<img src=":photo" class="photo">
 		</td>
 		<td>
 			<p class="hidden safe">:safe</p>
@@ -75,7 +77,7 @@
 			<p class="name-error"></p>
 			<p>Фамилия: <input type="text" class="surname" name="surname" value=":surname" oninput="validateField('.surname')"></p>
 			<p class="surname-error"></p>
-			<p>Телефон: <input type="text" class="phone" name="phone" value=":phone" oninput="validateField('.phone')"></p>
+			<p>Телефон: <input type="text" class="phone" name="phone" value=":phone" oninput="validateField('.phone');setCurPhone(this)"></p>
 			<p class="phone-error"></p>
 			<p>Почта: <input type="text" class="email" name="email" value=":email" oninput="validateField('.email')"></p>
 			<p class="email-error"></p>
@@ -89,7 +91,7 @@
 
 <template class="normal">
 	<tr class="item:id">
-		<td><img src=":image" class="photo"></td>
+		<td><img src=":photo" class="photo"></td>
 		<td>
 			<p>Имя: <span class="name">:name</span></p>
 			<p>Фамилия: <span class="surname">:surname</span></p>
@@ -103,6 +105,9 @@
 		</td>
 	</tr>
 </template>
+
+<script type="text/javascript" src="/js/phone.js"></script>
+<script type="text/javascript" src="/js/field.js"></script>
 
 <script>
 function add() {
@@ -122,7 +127,7 @@ function edit(id) {
 			"surname": $('.item' + id + ' .surname').html(),
 			"phone": $('.item' + id + ' .phone').html(),
 			"email": $('.item' + id + ' .email').html(),
-			"photo": $('.item' + id + ' .photo').html()
+			"photo": $('.item' + id + ' .photo').attr('src')
 		}
 		let template = $('.edit').html()
 			.replace(/:id/g, id)
@@ -161,7 +166,7 @@ function save(id) {
 			"surname": $('.new-item .surname').val(),
 			"phone": $('.new-item .phone').val(),
 			"email": $('.new-item .email').val(),
-			"photo": $('.new-item .photo').val()
+			"photo": $('.new-item .upphoto').val()
 		}
 		$.ajax({
 			url: '/api/book/create',
@@ -197,8 +202,9 @@ function save(id) {
 			"surname": $('.edit-item .surname').val(),
 			"phone": $('.edit-item .phone').val(),
 			"email": $('.edit-item .email').val(),
-			"photo": $('.edit-item .photo').val()
+			"photo": $('.edit-item .upphoto').val()
 		}
+		console.log(data)
 		$.ajax({
 			url: '/api/book/update',
 			type: 'PUT',
@@ -256,40 +262,27 @@ function sendMessage(className, message) {
 	}, 3000);
 }
 
-function validateField(field) {
-	// let str = $('.login').attr('name')
-	let obj = '.' + field
-	let data = [
-		{
-			name: $(field).attr('name'),
-			value: $(field).val()
-		}
-	]
-	console.log(data)
+function uploadFile(photo) {
+	var file_data = $('input' + photo).prop('files')[0];   
+	var form_data = new FormData();                  
+	form_data.append('file', file_data);
+	// alert(form_data);                             
 	$.ajax({
-		url: '/api/validation/user',
+		url: '/api/file/upload',
+		dataType: 'text',
+		cache: false,
+		contentType: false,
+		processData: false,
+		data: form_data,                         
 		type: 'POST',
-		contentType: "application/json; charset=utf-8",
-		dataType: "json",
-		data: JSON.stringify(data),
-		success: (response) => {
-			if(response == true) {
-				console.log(response)
-				$('.new-item ' + field).addClass('valid').removeClass('invalid')
-				$('.edit-item ' + field).addClass('valid').removeClass('invalid')
-				sendError(field + '-error', '')
-			} else {
-				console.log(response)
-				$('.new-item ' + field).addClass('invalid').removeClass('valid')
-				$('.edit-item ' + field).addClass('invalid').removeClass('valid')
-				sendError(field + '-error', response)
-			}
+		success: function(response){
+			// alert(response);
+			let answ = response.replace(/\"/g, '').replace(/\\/g, '')
+			$('.edit-item .upphoto').val(answ)
+			$('.new-item .upphoto').val(answ)
+			$('.edit-item .photo').attr('src', answ)
+			$('.new-item .photo').attr('src', answ)
 		}
-	})
-}
-
-function sendError(field, message) {
-	// console.log('error')
-	$(field).html(message).addClass('error-alert')
+	});
 }
 </script>

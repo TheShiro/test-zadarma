@@ -15,6 +15,7 @@
 		<?php endif; ?>
 		<input type="text" name="login" placeholder="Логин" class="form-control login">
 		<input type="password" name="password" placeholder="Пароль" class="form-control password">
+		<div class="g-recaptcha" data-sitekey="6Lcca7YZAAAAAHHKsGv-DNI_GiuVD2i0rUDyGYOY"></div>
 		<button class="btn btn-lg btn-primary btn-block">Войти</button>
 	</form>
 

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use sao\Session;
+use sao\Helper\String;
 use app\models\Book;
 
 class BookController extends \sao\MVC\Controller
@@ -24,6 +25,7 @@ class BookController extends \sao\MVC\Controller
 	}
 
 	public function view($id) {
+		// echo String::numberToString(858000000000);
 		$entry = Book::where(['id' => $id['id']])->one();
 		$this->render('view', [
 			'entry' => $entry,

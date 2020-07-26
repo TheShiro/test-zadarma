@@ -23,6 +23,7 @@
 		<p class="name-error"></p>
 		<input type="text" name="email" placeholder="Почта" class="form-control email" oninput="validateField('.email')">
 		<p class="email-error"></p>
+		<div class="g-recaptcha" data-sitekey="your_site_key"></div>
 		<button class="btn btn-lg btn-primary btn-block">Зарегистрироваться</button>
 	</form>
 </div>

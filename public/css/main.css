@@ -25,6 +25,10 @@ input {
     margin-bottom: 10px;
 }
 
+img {
+    max-width: 200px;
+}
+
 #auth {
     max-width: 500px;
     margin: 0 auto;

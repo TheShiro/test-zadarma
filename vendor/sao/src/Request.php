@@ -7,6 +7,7 @@ class Request
 
 	private $get;
 	private $post;
+	private $files;
 
 	public function __construct() 
 	{
@@ -24,6 +25,14 @@ class Request
 				$this->post = $json;
 			}
 		}
+
+		if(!empty($_FILES)) {
+			$this->files = $_FILES;
+		}
+
+		unset($_GET);
+		unset($_POST);
+		unset($_FILES);
 	}
 
 	public function get($key = "") 
@@ -42,6 +51,11 @@ class Request
 		}
 
 		return $this->post[$key];
+	}
+
+	public function files()
+	{
+		return $this->files;
 	}
 
 }
