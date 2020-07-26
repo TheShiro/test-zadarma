@@ -15,14 +15,17 @@ class AuthController extends \sao\MVC\Controller
 		if($post = \sao\Application::$app->request->post()) {
 			$auth = new User();
 			$auth->login = $post['login'];
-			$auth->password = $post['pass'];
+			$auth->password = $post['password'];
+
+			// print_r($auth);
 			if($auth->login()) {
+				// echo "OK";
 				$this->redirect("/");
-			} else {
-				$this->render('index', [
-					'errors' => "Не верный логин или пароль"
-				]);
-			}
+			} 
+
+			$this->render('index', [
+				'errors' => "Не верный логин или пароль"
+			]);
 		}
 		$this->render('index');
 	}

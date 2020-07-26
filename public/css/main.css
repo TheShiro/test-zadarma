@@ -24,3 +24,36 @@
 input {
     margin-bottom: 10px;
 }
+
+#auth {
+    max-width: 500px;
+    margin: 0 auto;
+    padding-top: 200px;
+}
+
+.logo {
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.valid {
+    border: solid 2px #34a462;
+}
+
+.invalid {
+    border: solid 2px #ea7462;
+}
+
+.error-alert {
+    font-size: 14px;
+    color: #ea7462;
+    transition: height .3s;
+}
+
+.error-registration {
+    border: solid 2px #ea7462;
+    font-size: 14px;
+}

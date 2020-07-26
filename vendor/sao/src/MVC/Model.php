@@ -9,6 +9,8 @@ class Model extends \sao\Database\Query
 	protected $fillable = [];
 	protected $hidden = [];
 
+	public $invalid = "";
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -16,10 +18,14 @@ class Model extends \sao\Database\Query
 
 	public function __set($name,$value)
 	{
-		// echo "initialize $name <br>";
 		$typeObject = "\sao\Data\\" . ucfirst($name);
 		$this->{$name} = new $typeObject();
-		$this->{$name}->value = $value;
+
+		if($this->{$name}->validation($value)) { //валидация 
+			$this->{$name}->value = $value;
+		} else {
+			$this->invalid .= $this->{$name}->error . "<br>";
+		}
 	}
 
 	public function __get($name) 

@@ -13,13 +13,17 @@ class User extends \sao\MVC\model
 	protected $name;
 	protected $email;
 
-	public $invalid = "";
+	// public $invalid = "";
 
-	protected $fillable = ['login', 'pass', 'name', 'email'];
+	protected $fillable = ['login', 'password', 'name', 'email'];
 
 	public function login()
 	{
-		if($user = self::where(['login' => $this->login, 'pass' => $this->password])->one()) {
+		if($this->invalid) { // если есть ошибки валидации
+			return false;
+		}
+
+		if($user = self::where(['login' => $this->login, 'password' => $this->password])->one()) {
 			Session::setParams(['user_id' => $user['id']]);
 			return true;
 		}
@@ -29,18 +33,20 @@ class User extends \sao\MVC\model
 
 	public function signup()
 	{
-		if(!$this->invalid) {
-			$request = [
-				'login' => $this->login,
-				'pass' => $this->password,
-				'name' => $this->name,
-				'email' => $this->email,
-			];
-
-			self::create($request);
-		} else {
+		if($this->invalid) { // если есть ошибки валидации
 			return false;
 		}
+
+		$request = [
+			'login' => $this->login,
+			'pass' => $this->password,
+			'name' => $this->name,
+			'email' => $this->email,
+		];
+
+		self::create($request);
+		
+		return true;
 	}
 
 }

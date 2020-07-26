@@ -11,7 +11,7 @@ interface IData
 
 	public function __get($name);
 
-	public function validate();
+	public function validation($value);
 
 }
 
